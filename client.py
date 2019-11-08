@@ -2,32 +2,27 @@ from serial import *
 from time import sleep
 from requests import *
 
-def led_on(LED):
-	LED.write(bytes('1',encoding='utf=8'))
-def led_off(LED):
-	LED.write(bytes('2',encoding='utf=8'))
+connect_flag = False
 
 def get_com():
-	com = get('http://127.0.0.1:5000/connect').text
-	return com
+	try:
+		res = get('http://127.0.0.1:5000/connect')
+		return res.text
+	except:
+		res = -1
+		return res
 
-def switch_func():
-	func = get('http://127.0.0.1:5000/').text
-	print(func)
-	return func
+while connect_flag == False:
+	
+	com = str(get_com())
 
-LED = Serial(get_com(),9600)
-sleep(2)
+	try:
+		ARM = Serial(com,9600)
+		sleep(2)
+		print('Done')
+		connect_flag = True
+	except:
+		print('Error')
 
-while True:
-	func = switch_func()
+	sleep(3)
 
-	if func == '1':
-		led_on(LED)
-		post('http://127.0.0.1:5000',{'cmd':'0'})
-
-	if func == '2':
-		led_off(LED)
-		post('http://127.0.0.1:5000',{'cmd':'0'})
-
-	sleep(2)
