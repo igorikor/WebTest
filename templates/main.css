@@ -10,6 +10,7 @@ header{
 }
 body{
 	background-color: #20b6b6;
+	height: 700px;
 }
 
 textarea{
@@ -36,6 +37,8 @@ textarea{
 	margin-left: 6px;
 	margin-top: 8px;
 }
+
+
 #ping{
 	float:left;
 	height: 30px;
@@ -165,6 +168,10 @@ textarea{
 	font-family: 'Patua One';
 	font-size: 30px;
 	color: white;
+	transition: background-color 0.5s;
+}
+.switch_coords:hover{
+	background-color: #000;
 }
 .send_bg{
 	width:90%;
@@ -196,6 +203,10 @@ textarea{
 	float: left;
 	margin: 5px;
 	outline: none;
+	transition: background-color 0.5s;
+}
+.pluss:hover{
+	background-color: #000;
 }
 .minus{
 	height: 63px;
@@ -211,6 +222,10 @@ textarea{
 	color:white;
 	border: 0px solid;
 	outline: none;	
+	transition: background-color 0.5s;
+}
+.minus:hover{
+	background-color: #000;
 }
 .coord_name{
 	border-radius: 2px;
