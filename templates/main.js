@@ -10,8 +10,13 @@ $(function(){
 	})
 
 	$("#custom_command").click(function(){
-		$("#log").append("-- "+$("#custom_command_text").val()+"\n");
-		$("#custom_command_text").val("");
+		var command = $("#custom_command_text").val();
+		$("#log").append("-- "+command+"\n");
+		$("custom_command_text").val("");
+		if (command != ""){
+			$.post('http://'+ip+'/command',{'command':command});
+		}
+		
 	})
 
 	$("#xyz_coord").click(function(){
