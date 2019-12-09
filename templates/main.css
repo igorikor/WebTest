@@ -95,13 +95,23 @@ textarea{
 	position: relative;
 	float:left;
 	height:20px;
-	width:75%;
+	width:60%;
 	padding-left:5px;
 	margin-left:6%;
 	margin-top:5px;
 	font-family: 'Patua One'; 
 }
 #custom_command{
+	position:relative;
+	margin-top:5px;
+	margin-left: 2px;
+	float:left;
+	height:24px;
+	width:50px;
+	font-family: 'Patua One'; 
+	border: 0px;
+}
+#recognition{
 	position:relative;
 	margin-top:5px;
 	margin-left: 2px;

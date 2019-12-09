@@ -1,7 +1,26 @@
-$(function(){
+$(document).ready(function(){
+
+	console.log("ready");
 
 	var ip = '127.0.0.1:5000';
 	var mode = 1;
+
+	var recognition = new webkitSpeechRecognition();
+	recognition.continuous = true;
+
+	$("#recognition").click(function(){
+		recognition.onresult = function(event) { 
+			console.log(event);
+			var res = "";
+			for(var i=0; i<event.results.length; i++){
+				res = res + event.results[i][0].transcript + " ";
+				console.log(event.results[i][0].transcript);
+			}
+			$("#custom_command_text").val(res);
+			recognition.stop();
+		}
+		recognition.start();
+	})
 
 	$("#connect").click(function(){
 		var com_port = $("#com").val();
@@ -11,12 +30,12 @@ $(function(){
 
 	$("#custom_command").click(function(){
 		var command = $("#custom_command_text").val();
+		$("#custom_command_text").val("");
 		$("#log").append("-- "+command+"\n");
-		$("custom_command_text").val("");
-		if (command != ""){
+		if (command != ''){
 			$.post('http://'+ip+'/command',{'command':command});
-		}
-		
+			command = '';
+		}	
 	})
 
 	$("#xyz_coord").click(function(){

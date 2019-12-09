@@ -1,9 +1,11 @@
 from serial import *
 from time import sleep
 from requests import *
+from threading import Thread
 
 connect_flag = False
-send_command = ''
+command = '-1'
+in_progress = False
 
 def get_com():
 	try:
@@ -14,8 +16,8 @@ def get_com():
 		return res
 
 def get_command():
-    command = get('http://127.0.0.1:5000/command')
-    return command.text
+	command = get('http://127.0.0.1:5000/command')
+	return command.text
 
 def prepeare_command(send_command):
 	b = 48
@@ -45,27 +47,40 @@ def serial_print():
 	else:
 		print(l[0])
 
+def print_com():
+	while True:
+		serial_print()
+
+def send_to_arduino():
+	while True:
+		send_command = get_command()
+		try:
+			prepeare_command(send_command)
+			sleep(2)
+			post('http://127.0.0.1:5000/command', data={'command':''})
+		except:
+			print('Error')
+		sleep(1)
+		
+
+message = Thread(target=send_to_arduino,daemon=True)
+com_print = Thread(target=print_com,daemon=True)
+while connect_flag == False:
+	
+	com = str(get_com())
+
+	try:
+		ARM = Serial(com,9600)
+		sleep(2)
+		print('Done')
+		connect_flag = True
+	except:
+		print('Error')
+
+	sleep(1)
+
+message.start()
+com_print.start()
+
 while True:
-    while connect_flag == False:
-    	
-    	com = str(get_com())
-    
-    	try:
-    		ARM = Serial(com,9600)
-    		sleep(2)
-    		print('Done')
-    		connect_flag = True
-    	except:
-    		print('Error')
-    
-    	sleep(1)
-    
-    while connect_flag == True:
-    	send_command = '0011ff'
-    	prepeare_command(send_command)
-    	for i in range(40):
-    		serial_print()
-    	send_command = '0012ff'
-    	prepeare_command(send_command)
-    	connect_flag = False
-    	
+	sleep(0.001)
